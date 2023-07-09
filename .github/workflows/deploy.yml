@@ -3,6 +3,16 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: 'main'
+  workflow_dispatch:
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   build_site:
@@ -22,7 +32,7 @@ jobs:
 
       - name: build
         env:
-          BASE_PATH: '/your-repo-name'
+          BASE_PATH: '/my-webpage-public'
         run: |
           npm run build
           touch build/.nojekyll
@@ -36,10 +46,6 @@ jobs:
     needs: build_site
     runs-on: ubuntu-latest
 
-    permissions:
-      pages: write
-      id-token: write
-
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -47,4 +53,4 @@ jobs:
     steps:
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v2
