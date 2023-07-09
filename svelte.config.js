@@ -21,9 +21,8 @@ const config = {
 			precompress: false,
 			strict: true
 		}),
-		trailingSlash: 'always',
 		paths: {
-			base: dev ? '' : '/my-webpage-public'
+			base: dev ? '' : process.env.BASE_PATH
 		}
 	}
 };
